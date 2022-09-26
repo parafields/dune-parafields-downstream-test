@@ -34,15 +34,10 @@ jobs:
       run: |
         sudo apt install libopenmpi-dev libfftw3-mpi-dev
 
-    - name: make build directory
-      run: cmake -E make_directory ${{runner.workspace}}/build
+    - name: Configure Dune modules
+      run: |
+        ./dune-common/bin/dunecontrol --module=dune-parafields-downstream-test --builddir=${{runner.workspace}}/build configure
 
-    - name: configure cmake
-      shell: bash
-      working-directory: ${{runner.workspace}}/build
-      run: cmake $GITHUB_WORKSPACE/dune-parafields-downstream-test
-
-    - name: build
-      shell: bash
-      working-directory: ${{runner.workspace}}/build
-      run: cmake --build .
+    - name: Build Dune modules
+      run: |
+        ./dune-common/bin/dunecontrol --module=dune-parafields-downstream-test --builddir=${{runner.workspace}}/build make
