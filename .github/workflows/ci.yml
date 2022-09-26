@@ -17,14 +17,14 @@ jobs:
     - uses: actions/checkout@v3
       with:
         path: 'dune-parafields-downstream-test'
-    
+
     - uses: actions/checkout@v3
       with:
         path: 'dune-parafields'
         ref: ${{ github.event.inputs.dune-parafields-version }}
         repository: parafields/dune-parafields
         submodules: 'recursive'
-    
+
     - uses: actions/checkout@v3
       with:
         path: 'dune-common'
