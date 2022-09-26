@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  workflow_dispatch:
+    inputs:
+      dune-parafields-version:
+        description: "Which committish from dune-parafields to checkout"
+        required: true
+        default: "main"
+
+jobs:
+  build-and-test:
+    name: Testing
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        path: 'dune-parafields-downstream-test'
+    
+    - uses: actions/checkout@v3
+      with:
+        path: 'dune-parafields'
+        ref: ${{ github.event.inputs.dune-parafields-version }}
+        repository: parafields/dune-parafields
+        submodules: 'recursive'
+    
+    - uses: actions/checkout@v3
+      with:
+        path: 'dune-common'
+        repository: https://gitlab.dune-project.org/core/dune-common.git
+
+    - name: Install MPI + FFTW
+      run: |
+        sudo apt install libopenmpi-dev libfftw-mpi-dev
+
+    - name: make build directory
+      run: cmake -E make_directory ${{runner.workspace}}/build
+
+    - name: configure cmake
+      shell: bash
+      working-directory: ${{runner.workspace}}/build
+      run: cmake $GITHUB_WORKSPACE
+
+    - name: build
+      shell: bash
+      working-directory: ${{runner.workspace}}/build
+      run: cmake --build .
