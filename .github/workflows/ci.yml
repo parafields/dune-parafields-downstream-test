@@ -28,7 +28,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         path: 'dune-common'
-        repository: https://gitlab.dune-project.org/core/dune-common.git
+        repository: dune-project/dune-common
 
     - name: Install MPI + FFTW
       run: |
