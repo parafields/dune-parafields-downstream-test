@@ -32,7 +32,7 @@ jobs:
 
     - name: Install MPI + FFTW
       run: |
-        sudo apt install libopenmpi-dev libfftw-mpi-dev
+        sudo apt install libopenmpi-dev libfftw3-mpi-dev
 
     - name: make build directory
       run: cmake -E make_directory ${{runner.workspace}}/build
